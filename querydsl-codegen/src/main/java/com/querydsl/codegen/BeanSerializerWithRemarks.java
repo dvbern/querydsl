@@ -1,12 +1,3 @@
-/*
- * Copyright © 2019 DV Bern AG, Switzerland
- *
- * Das vorliegende Dokument, einschliesslich aller seiner Teile, ist urheberrechtlich
- * geschützt. Jede Verwertung ist ohne Zustimmung der DV Bern AG unzulässig. Dies gilt
- * insbesondere für Vervielfältigungen, die Einspeicherung und Verarbeitung in
- * elektronischer Form. Wird das Dokument einem Kunden im Rahmen der Projektarbeit zur
- * Ansicht übergeben, ist jede weitere Verteilung durch den Kunden an Dritte untersagt.
- */
 package com.querydsl.codegen;
 
 import java.io.IOException;
@@ -27,12 +18,17 @@ import com.google.common.collect.Lists;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.querydsl.core.util.BeanUtils;
 
-public class BeanSerializerWithRemarks extends BeanSerializer {
+public class BeanSerializerWithRemarks implements Serializer {
+
+    private static final String IMPORT_PACKAGE = "ch.dvbern.honegger.b3000.b2000import";
+    private static final String ENTITIES_PACKAGE = IMPORT_PACKAGE + ".entities";
+    private static final String HELPER_PACKAGE = IMPORT_PACKAGE + ".helpers";
 
     private static final Function<Property, Parameter> propertyToParameter = new Function<Property, Parameter>() {
         @Override
@@ -85,6 +81,14 @@ public class BeanSerializerWithRemarks extends BeanSerializer {
     public BeanSerializerWithRemarks(boolean propertyAnnotations, String javadocSuffix) {
         this.propertyAnnotations = propertyAnnotations;
         this.javadocSuffix = javadocSuffix;
+
+        // DVB configuration
+        this.addFullConstructor = true;
+        this.addToString = true;
+        this.printSupertype = true;
+        this.interfaces.add(new SimpleType(IMPORT_PACKAGE + ".B2000Entity",
+                IMPORT_PACKAGE,
+                "B2000Entity"));
     }
 
     @Override
@@ -133,6 +137,8 @@ public class BeanSerializerWithRemarks extends BeanSerializer {
 
         if (!interfaces.isEmpty()) {
             Type superType = null;
+            // String helperName = model.getSimpleName() + "Helper";
+            // Type superType = new SimpleType(HELPER_PACKAGE + "." + helperName, HELPER_PACKAGE, helperName);
             if (printSupertype && model.getSuperType() != null) {
                 superType = model.getSuperType().getType();
             }
@@ -141,9 +147,11 @@ public class BeanSerializerWithRemarks extends BeanSerializer {
         } else if (printSupertype && model.getSuperType() != null) {
             writer.beginClass(model, model.getSuperType().getType());
         } else {
-            writer.beginClass(model);
+            // String helperName = model.getSimpleName() + "Helper";
+            // Type superType = new SimpleType(HELPER_PACKAGE + "." + helperName, HELPER_PACKAGE, helperName);
+            // writer.beginClass(model, superType);
+			writer.beginClass(model);
         }
-
 
         bodyStart(model, writer);
 
