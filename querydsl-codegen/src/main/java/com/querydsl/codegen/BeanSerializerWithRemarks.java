@@ -229,6 +229,12 @@ public class BeanSerializerWithRemarks implements Serializer {
         String clean = Joiner.on('_').join(remarks)
                 .trim()
 				.replaceAll("%", "Pct")
+				.replaceAll("Ä", "Ae")
+				.replaceAll("ä", "ae")
+				.replaceAll("Ö", "Oe")
+				.replaceAll("ö", "oe")
+				.replaceAll("Ü", "Ue")
+				.replaceAll("ü", "ue")
                 .replaceAll("[^a-zA-Z0-9_]+", "_");
                 // .replaceAll("^\\d+", "");
 
