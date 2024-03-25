@@ -42,7 +42,7 @@
     <!-- SQL deps -->
     <derby.version>10.11.1.1</derby.version>
     <hsqldb.version>2.3.2</hsqldb.version>
-    <h2.version>1.4.186</h2.version>
+    <h2.version>2.2.220</h2.version>
     <postgresql.version>9.4-1200-jdbc41</postgresql.version>
     <oracle.version>11.1.0.7.0</oracle.version>
     <mysql.version>5.1.30</mysql.version>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.1</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
